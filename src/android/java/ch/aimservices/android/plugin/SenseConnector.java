@@ -69,7 +69,7 @@ public class SenseConnector extends CordovaPlugin implements SenseServicesContex
         systemWebView = (WebView) webview.getView();
         initializeActions();
         initializeSense();
-		FileUtils.deleteQuietly(new File(cordova.getActivity().getFilesDir(), UpdateAppAction.UPDATE_DIRECTORY));
+        FileUtils.deleteQuietly(new File(cordova.getActivity().getFilesDir(), UpdateAppAction.UPDATE_DIRECTORY));
         disableCookies(cordova.getActivity());
         setWebViewSettings();
     }

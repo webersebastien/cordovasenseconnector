@@ -50,15 +50,15 @@
     			</intent-filter>
     		</activity>
 
-            <provider
-                android:name="android.support.v4.content.FileProvider"
-                android:authorities="${applicationId}.provider"
-                android:exported="false"
-                android:grantUriPermissions="true" >
-                    <meta-data
-                        android:name="android.support.FILE_PROVIDER_PATHS"
-                        android:resource="@xml/sense_provider_paths"/>
-            </provider>
+    		<provider
+    			android:name="android.support.v4.content.FileProvider"
+    			android:authorities="${applicationId}.provider"
+    			android:exported="false"
+    			android:grantUriPermissions="true" >
+    				<meta-data
+    			        android:name="android.support.FILE_PROVIDER_PATHS"
+    			        android:resource="@xml/sense_provider_paths"/>
+    		</provider>
     	</config-file>
     	
     	<config-file target="res/xml/config.xml" parent="/*">
@@ -115,8 +115,8 @@
 		<resource-file src="src/android/libs/armeabi-v7a/libsqlcipher.so" target="libs/armeabi-v7a/libsqlcipher.so" />
 		<resource-file src="src/android/libs/x86/libsqlcipher.so" target="libs/x86/libsqlcipher.so" />
 
-        <!-- Res -->
-        <resource-file src="src/android/res/xml/sense_provider_paths.xml" target="res/xml/sense_provider_paths.xml" />
+		<!-- Res -->
+		<resource-file src="src/android/res/xml/sense_provider_paths.xml" target="res/xml/sense_provider_paths.xml" />
 
 		<!-- Plugin's libraries -->
 		<resource-file src="src/android/libs/commons-io-2.4.jar" target="libs/commons-io-2.4.jar" />
@@ -127,8 +127,8 @@
 		<!-- Properties -->
 		<resource-file src="src/android/assets/sense-config.properties" target="assets/sense-config.properties" />
 
-        <!-- Required framework for FileProvider API -->
-        <framework src="com.android.support:support-v4:24.1.1+" />
+		<!-- Required framework for FileProvider API -->
+		<framework src="com.android.support:support-v4:24.1.1+" />
     </platform>
     
     <!-- iOS -->
