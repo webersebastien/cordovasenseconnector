@@ -1,5 +1,14 @@
 package ch.aimservices.android.plugin.action;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.json.JSONArray;
@@ -8,20 +17,16 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
-import android.os.Environment;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.support.v4.content.FileProvider;
 import android.webkit.WebView;
 import android.widget.Toast;
 
 import ch.aimservices.android.plugin.SenseServicesContext;
-
-import static android.app.DownloadManager.Request;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,84 +35,117 @@ import static android.app.DownloadManager.Request;
  * Time: 08:21
  */
 public class UpdateAppAction extends BaseAction {
+	public static final String UPDATE_DIRECTORY = "updates";
+	public static final String UPDATE_FILE_NAME = "appUpdate.apk";
+
 	private final Logger logger = LoggerFactory.getLogger(UpdateAppAction.class);
 
-    private final DownloadManager downloadManager;
+	public UpdateAppAction(final WebView webview, final CordovaInterface cordova, final SenseServicesContext
+			senseServicesContext) {
+		super(webview, cordova, senseServicesContext);
+	}
 
-    private long downloadReference;
+	@Override
+	public boolean supports(final String action) {
+		return "updateApp".equals(action);
+	}
 
-    //broadcast receiver to get notification about ongoing downloads
-    private final BroadcastReceiver downloadReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(final Context context, final Intent intent) {
-            //check if the broadcast message is for our Enqueued download
-            final long referenceId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-            if (downloadReference == referenceId) {
-            	logger.debug("Downloading application update complete");
-                //start the installation of the latest version
-                final Intent installIntent = new Intent(Intent.ACTION_VIEW);
-                final Uri downloadUri = downloadManager.getUriForDownloadedFile(downloadReference);
-                logger.debug("Download uri: " + downloadUri);
-                installIntent.setDataAndType(downloadUri, "application/vnd.android.package-archive");
-                installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	@Override
+	public boolean execute(final String action, final JSONArray args, final CallbackContext callbackContext) {
+		logger.debug("UpdateAppAction:execute -> " + action);
+		try {
+			this.callbackContext = callbackContext;
 
-                getContext().startActivity(installIntent);
+			final JSONObject options = args.getJSONObject(0);
+			final String url = options.getString("url");
 
-                // Finished so unregister broadcast receiver
-                UpdateAppAction.this.unregisterReceiver();
-            }
-        }
-    };
+			DownloadUpdateAsyncTask downloadUpdateAsyncTask = new DownloadUpdateAsyncTask(getContext(), url);
+			downloadUpdateAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			success(0);
+		} catch (final JSONException e) {
+			logger.error("Problem retrieving parameters. Returning error.", e);
+			error(ERR_RETRIEVING_PARAMS);
+		}
+		return true;
+	}
 
-    public UpdateAppAction(final WebView webview, final CordovaInterface cordova, final SenseServicesContext senseServicesContext) {
-        super(webview, cordova, senseServicesContext);
-        downloadManager = (DownloadManager) getCordovaActivity().getSystemService(Context.DOWNLOAD_SERVICE);
-    }
+	private class DownloadUpdateAsyncTask extends AsyncTask<Void, Void, File> {
+		private final WeakReference<Context> weakContext;
+		private final String downloadUrl;
 
-    @Override
-    public boolean supports(final String action) {
-        return "updateApp".equals(action);
-    }
+		DownloadUpdateAsyncTask(Context context, String downloadUrl) {
+			this.weakContext = new WeakReference<Context>(context);
+			this.downloadUrl = downloadUrl;
+		}
 
-    @Override
-    public boolean execute(final String action, final JSONArray args, final CallbackContext callbackContext) {
-    	logger.debug("UpdateAppAction:execute -> " + action);
-        try {
-            this.callbackContext = callbackContext;
+		@Override
+		protected void onPreExecute() {
+			Toast.makeText(getContext(), "Launching application update, please wait...", Toast.LENGTH_LONG).show();
+		}
 
-            final JSONObject options = args.getJSONObject(0);
-            final String url = options.getString("url");
+		@Override
+		protected File doInBackground(Void... params) {
+			if (weakContext.get() == null) {
+				return null;
+			}
 
-            startDownload(url);
-            success(0);
-        } catch (final JSONException e) {
-            logger.error("Problem retrieving parameters. Returning error.", e);
-            error(ERR_RETRIEVING_PARAMS);
-        }
-        return true;
-    }
+			FileOutputStream fos = null;
+			try {
+				URL url = new URL(downloadUrl);
+				HttpURLConnection c = (HttpURLConnection) url.openConnection();
+				c.setRequestMethod("GET");
+				c.setRequestProperty("Accept-Charset", "UTF-8");
+				c.setDoOutput(false);
+				c.connect();
 
-    private void startDownload(final String url) {
-        registerReceiver();
+				File updateFolder = new File(weakContext.get().getFilesDir(), UPDATE_DIRECTORY);
+				if (!updateFolder.exists()) {
+					updateFolder.mkdirs();
+				}
 
-        final Uri downloadUri = Uri.parse(url);
-        final Request request = new Request(downloadUri);
-        request.setTitle("Application update");
-        request.setDestinationInExternalFilesDir(getCordovaActivity(), Environment.DIRECTORY_DOWNLOADS, "MainActivity.apk");
+				File apkFile = new File(updateFolder, UPDATE_FILE_NAME);
+				fos = new FileOutputStream(apkFile);
+				InputStream is = c.getInputStream();
+				IOUtils.copy(is, fos);
+				IOUtils.closeQuietly(is);
+				return apkFile;
+			} catch (IOException e) {
+				logger.error("Error while downloading file.", e);
+				IOUtils.closeQuietly(fos);
+			}
+			return null;
+		}
 
-        Toast.makeText(getContext(), "Launching application update, please wait...", Toast.LENGTH_LONG).show();
+		@Override
+		protected void onPostExecute(File file) {
+			if (weakContext.get() == null) {
+				return;
+			}
 
-        downloadReference = downloadManager.enqueue(request);
-    }
+			if (file != null) {
+				logger.debug("Update downloaded at path {}. Launching package manager", file.getAbsolutePath());
 
-    private void registerReceiver() {
-        // Broadcast receiver for the download manager
-        final IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
-        getCordovaActivity().registerReceiver(downloadReceiver, filter);
-    }
-
-    private void unregisterReceiver() {
-        // Finished receiving broadcast for downloads
-        getCordovaActivity().unregisterReceiver(downloadReceiver);
-    }
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				Uri apkUri;
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+					// Workaround to replace MODE_WORLD_READABLE flag that
+					// throws a SecurityException since API 25. This is however
+					// discouraged by android team.
+					file.getParentFile().setExecutable(true, false);
+					file.setReadable(true, false);
+					apkUri = Uri.fromFile(file);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				} else {
+					apkUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".provider",
+							file);
+					intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+				}
+				intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
+				getContext().startActivity(intent);
+			} else {
+				Toast.makeText(getContext(), "Impossible to download update. Try again",
+						Toast.LENGTH_LONG).show();
+			}
+		}
+	}
 }
