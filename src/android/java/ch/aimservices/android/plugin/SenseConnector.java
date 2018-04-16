@@ -1,5 +1,7 @@
 package ch.aimservices.android.plugin;
 
+import org.apache.commons.io.FileUtils;
+	
 import java.io.File;
 import java.net.PasswordAuthentication;
 import java.util.ArrayList;
@@ -67,6 +69,7 @@ public class SenseConnector extends CordovaPlugin implements SenseServicesContex
         systemWebView = (WebView) webview.getView();
         initializeActions();
         initializeSense();
+        FileUtils.deleteQuietly(new File(cordova.getActivity().getFilesDir(), UpdateAppAction.UPDATE_DIRECTORY));
         disableCookies(cordova.getActivity());
         setWebViewSettings();
     }
