@@ -1,4 +1,4 @@
-#Secure your multiplatform application
+# Secure your multiplatform application
 
 With the increasing number of device's shapes, resolutions and features, developing a mobile application has become a real challenge for specialists. The application layout has to be responsive, the application has to meet design guidelines, new APIs and best practices proposed – even sometime imposed – by OS editors.
 
@@ -30,7 +30,7 @@ Our plugin (SenseConnector) installation is based on the CLI (command line inter
 
 SenseConnector Cordova plugin installation for iOS & Android
 
-#Requirements
+# Requirements
 To perform the operation, the Cordova command-line interface CLI is used. It allows to have a custom project respecting Cordova development standards. The executables are developed using NodeJS and is installed using NPM, the package manager of NodeJS.
 
 The NodeJS and NPM installation package can be found at the following address: http://nodejs.org/
@@ -40,7 +40,7 @@ It must be installed on MacOS with the latest version of XCode installed.
 For Android, it is necessary to install the Android SDK with API 21 or later and Apache Ant to compile the project. Apache Ant must be in the path of the OS.
 
 
-#Installation
+# Installation
 To create a blank project that will serve as a base for html sources, the procedure is as follows :
 
 - npm –g install cordova
@@ -72,24 +72,7 @@ With the default SENSE SDK, the debugger is not usable. To enable the debug mode
 
 Now, when you compile in Debug mode with Xcode, you are able to use the debugger.
 
-## iOS - Support the SENSE logger
-SENSE provides a logger to save logs on encrypted files then send logs to the server.
-
-To enable this feature, you need to follow the next points.
-The first point is to modify the `.pch` file of your application
-
-* In Xcode, find the `YourApp-Prefix.pch.pch` file of your application. ATTENTION, change the value of `YourApp`
-* At the end of the file, add `#import <sense/SFKPCHImport.h>`
-
-The second point is to modify the CordovaLib.
-
-* In Xcode, open the `CordovaLib.xcodeproj` containted in the your application workspace
-* Open the `Build Phases -> Link Binary With Libraries`
-* Drag and drop the `sense.framework` at path `YourAppRootFolder/platforms/ios/YourApp/Plugins/ch.aimservices.cordova.plugins.sense`
-* Find the `CordovaLib_Prefix.pch` file
-* At the end of the file, add `#import <sense/SFKPCHImport.h>`
-
-#Validation
+# Validation
 To test the Cordova project please follow the following procedure:
 
 - sudo npm –g install ios-deploy
@@ -99,7 +82,7 @@ To test the Cordova project please follow the following procedure:
 
 The application will run in the emulator and double tapping Cmd + Shift + H you can check the overview of the application is well hidden by the SENSE SDK. For Android it depends on the version of the os but clicking on the “Exposé” you should see a black thumbnail where the application should be.
 
-#Packaging
+# Packaging
 To build the .ipa you can either use XCode or use the following command line :
 
 - xcrun -sdk iphoneos PackageApplication -v $PWD/platforms/ios/build/device/ProjectName.app -o $PWD/platforms/ios/build/ ProjectName.ipa –embed ../ProjectName.mobileprovision

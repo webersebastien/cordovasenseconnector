@@ -1,27 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    id="ch.aimservices.cordova.plugins.sense"
-    version="1.0.6">
-    
-    <name>Sense-Connector</name>
-    <description>Connector between Cordova applications and Sysmosoft's Sense Framework</description>
-    <author>Pavel Blanco</author>
-    <keywords>cordova,sense</keywords>
-    
-    <engines>
-    	<engine name="cordova" version=">=3.0.0" />
-    	<engine name="cordova" version="&lt;4.0.0" />
-    </engines>
-    
-    <js-module src="www/sense.js" name="Sense">
-    	<clobbers target="Sense" />
-    </js-module>
-    
-    <!-- Android -->
-    <platform name="android">
-	
-    	<config-file target="AndroidManifest.xml" parent="/manifest">
+<plugin 
+	xmlns="http://apache.org/cordova/ns/plugins/1.0" 
+	xmlns:android="http://schemas.android.com/apk/res/android" id="ch.aimservices.cordova.plugins.sense" version="1.0.6">
+	<name>Sense-Connector</name>
+	<description>Connector between Cordova applications and Sysmosoft's Sense Framework</description>
+	<author>Pavel Blanco</author>
+	<keywords>cordova,sense</keywords>
+	<engines>
+		<engine name="cordova" version=">=3.0.0" />
+		<engine name="cordova" version="&lt;4.0.0" />
+	</engines>
+	<js-module src="www/sense.js" name="Sense">
+		<clobbers target="Sense" />
+	</js-module>
+	<!-- Android -->
+	<platform name="android">
+		<config-file target="AndroidManifest.xml" parent="/manifest">
 			<uses-permission android:name="android.permission.INTERNET" />
 			<uses-permission android:name="android.permission.BLUETOOTH" />
 			<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -29,22 +23,14 @@
 			<!-- Permission REQUEST_INSTALL_PACKAGES required for apps with targetSdk > 26 --> 
 			<!-- <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/> -->
 		</config-file>
-		
-    	<config-file target="AndroidManifest.xml" parent="/manifest/application">
-			
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
 			<!-- Services -->
-			<service
-				android:name="ch.sysmosoft.sense.android.core.service.SenseSessionService"
-				android:exported="false">
-				
+			<service android:name="ch.sysmosoft.sense.android.core.service.SenseSessionService" android:exported="false">
 				<!-- SDK version -->
-            	<meta-data
-                	android:name="ch.sysmosoft.sense.android.sdk.version"
-                	android:value="3.17.0-SNAPSHOT" />
+				<meta-data android:name="ch.sysmosoft.sense.android.sdk.version" android:value="3.17.0-SNAPSHOT" />
 			</service>
-
 			<activity android:name="ch.aimservices.android.plugin.SenseConnector" android:label="@string/app_name">
-    			<intent-filter>
+				<intent-filter>
 					<action android:name="android.intent.action.VIEW" />
 					<category android:name="android.intent.category.DEFAULT" />
     			</intent-filter>
@@ -94,9 +80,9 @@
 		<source-file src="src/android/java/ch/aimservices/android/plugin/action/filesystem/AbstractFileSystemAction.java" target-dir="src/ch/aimservices/android/plugin/action/filesystem/" />
 		<source-file src="src/android/java/ch/aimservices/android/plugin/action/filesystem/CreateItemAction.java" target-dir="src/ch/aimservices/android/plugin/action/filesystem" />
 		<source-file src="src/android/java/ch/aimservices/android/plugin/action/filesystem/GetItemAction.java" target-dir="src/ch/aimservices/android/plugin/action/filesystem" />
-		<source-file src="src/android/java/ch/aimservices/android/plugin/action/filesystem/ItemExistAction.java" target-dir="src/ch/aimservices/android/plugin/action/filesystem" />			
+		<source-file src="src/android/java/ch/aimservices/android/plugin/action/filesystem/ItemExistAction.java" target-dir="src/ch/aimservices/android/plugin/action/filesystem" />
 		<source-file src="src/android/java/ch/aimservices/android/plugin/action/filesystem/MoveItemAction.java" target-dir="src/ch/aimservices/android/plugin/action/filesystem" />
-		<source-file src="src/android/java/ch/aimservices/android/plugin/action/filesystem/RemoveItemAction.java" target-dir="src/ch/aimservices/android/plugin/action/filesystem" />					
+		<source-file src="src/android/java/ch/aimservices/android/plugin/action/filesystem/RemoveItemAction.java" target-dir="src/ch/aimservices/android/plugin/action/filesystem" />
 		<source-file src="src/android/java/ch/aimservices/android/plugin/action/session/AbstractSessionAction.java" target-dir="src/ch/aimservices/android/plugin/action/session" />
 		<source-file src="src/android/java/ch/aimservices/android/plugin/action/session/ChangePwdAction.java" target-dir="src/ch/aimservices/android/plugin/action/session" />
 		<source-file src="src/android/java/ch/aimservices/android/plugin/action/session/EnrollAction.java" target-dir="src/ch/aimservices/android/plugin/action/session" />
@@ -109,7 +95,6 @@
 		<source-file src="src/android/java/ch/aimservices/android/proxy/impl/KitKatConfigurator.java" target-dir="src/ch/aimservices/android/proxy/impl" />
 		<source-file src="src/android/java/ch/aimservices/android/proxy/impl/LConfigurator.java" target-dir="src/ch/aimservices/android/proxy/impl" />
 		<source-file src="src/android/java/ch/aimservices/android/reflection/Reflections.java" target-dir="src/ch/aimservices/android/reflection" />
-
 		<!-- so Libs -->
 		<resource-file src="src/android/libs/armeabi/libsqlcipher.so" target="libs/armeabi/libsqlcipher.so" />
 		<resource-file src="src/android/libs/armeabi-v7a/libsqlcipher.so" target="libs/armeabi-v7a/libsqlcipher.so" />
@@ -130,31 +115,37 @@
 		<!-- Required framework for FileProvider API -->
 		<framework src="com.android.support:support-v4:24.1.1+" />
     </platform>
-    
-    <!-- iOS -->
-    <platform name="ios">
-    	<config-file target="config.xml" parent="/*">
-    		<feature name="SenseConnector">
-    			<param name="ios-package" value="SenseConnector" />
-    			<param name="onload" value="true" />
-    		</feature>
-    	</config-file>
-    	
-    	<framework src="libz.dylib" />
-    	<framework src="libxml2.dylib" />
-    	<framework src="libc++.dylib" />
-    	<framework src="CoreData.framework" />
-    	<framework src="SystemConfiguration.framework" />
-    	<framework src="Security.framework" />
-    	<framework src="CFNetwork.framework" />
-    	<framework src="CoreLocation.framework" />
-    	<framework src="WebKit.framework" />
-    	<framework src="src/ios/sense.framework" custom="true" />
 
-    	<header-file src="src/ios/SenseConnector.h" />
-    	<source-file src="src/ios/SenseConnector.m" />
-    	
-    	<resource-file src="src/ios/sense-config.properties" />
-
-    </platform>
+	<!-- iOS -->
+	<platform name="ios">
+		<config-file target="config.xml" parent="/*">
+			<feature name="SenseConnector">
+				<param name="ios-package" value="SenseConnector" />
+				<param name="onload" value="true" />
+			</feature>
+			<feature name="Console">
+				<param name="ios-package" value="SCDLogger"/>
+			</feature>
+		</config-file>
+		<js-module src="www/console-via-logger.js" name="console">
+			<clobbers target="console" />
+		</js-module>
+		<js-module src="www/logger.js" name="logger">
+			<clobbers target="cordova.logger" />
+		</js-module>
+		<framework src="libz.dylib" />
+		<framework src="libxml2.dylib" />
+		<framework src="libc++.dylib" />
+		<framework src="SystemConfiguration.framework" />
+		<framework src="Security.framework" />
+		<framework src="CFNetwork.framework" />
+		<framework src="CoreLocation.framework" />
+		<framework src="WebKit.framework" />
+		<framework src="src/ios/sense.framework" custom="true" />
+		<header-file src="src/ios/SenseConnector.h" />
+		<source-file src="src/ios/SenseConnector.m" />
+		<resource-file src="src/ios/sense-config.properties" />
+		<header-file src="src/ios/SCDLogger.h" />
+		<source-file src="src/ios/SCDLogger.m" />
+	</platform>
 </plugin>
