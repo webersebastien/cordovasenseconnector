@@ -17,10 +17,11 @@
  under the License.
  */
 
-#import "CDVLogger.h"
+#import "SCDLogger.h"
 #import <Cordova/CDV.h>
 #import <sense/SFKPCHImport.h>
-@implementation CDVLogger
+
+@implementation SCDLogger
 
 /* log a message */
 - (void)logLevel:(CDVInvokedUrlCommand*)command

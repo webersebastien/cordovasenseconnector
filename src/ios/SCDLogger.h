@@ -19,7 +19,7 @@
 
 #import <Cordova/CDVPlugin.h>
 
-@interface CDVLogger : CDVPlugin
+@interface SCDLogger : CDVPlugin
 
 - (void)logLevel:(CDVInvokedUrlCommand*)command;
 

@@ -100,7 +100,7 @@
 				<param name="onload" value="true" />
 			</feature>
 			<feature name="Console">
-				<param name="ios-package" value="CDVLogger"/>
+				<param name="ios-package" value="SCDLogger"/>
 			</feature>
 		</config-file>
 		<js-module src="www/console-via-logger.js" name="console">
@@ -112,7 +112,6 @@
 		<framework src="libz.dylib" />
 		<framework src="libxml2.dylib" />
 		<framework src="libc++.dylib" />
-		<framework src="CoreData.framework" />
 		<framework src="SystemConfiguration.framework" />
 		<framework src="Security.framework" />
 		<framework src="CFNetwork.framework" />
@@ -122,7 +121,7 @@
 		<header-file src="src/ios/SenseConnector.h" />
 		<source-file src="src/ios/SenseConnector.m" />
 		<resource-file src="src/ios/sense-config.properties" />
-		<header-file src="src/ios/CDVLogger.h" />
-		<source-file src="src/ios/CDVLogger.m" />
+		<header-file src="src/ios/SCDLogger.h" />
+		<source-file src="src/ios/SCDLogger.m" />
 	</platform>
 </plugin>
