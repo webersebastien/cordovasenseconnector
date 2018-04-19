@@ -37,7 +37,7 @@
     		</activity>
 
     		<provider
-    			android:name="android.support.v4.content.FileProvider"
+    			android:name="ch.aimservices.android.plugin.SenseUpdateFileProvider"
     			android:authorities="${applicationId}.provider"
     			android:exported="false"
     			android:grantUriPermissions="true" >
@@ -70,6 +70,7 @@
 		<source-file src="src/android/java/ch/aimservices/android/plugin/SenseConnector.java" target-dir="src/ch/aimservices/android/plugin" />
 		<source-file src="src/android/java/ch/aimservices/android/plugin/Console.java" target-dir="src/ch/aimservices/android/plugin/" />
 		<source-file src="src/android/java/ch/aimservices/android/plugin/SenseServicesContext.java" target-dir="src/ch/aimservices/android/plugin" />
+		<source-file src="src/android/java/ch/aimservices/android/plugin/SenseUpdateFileProvider.java" target-dir="src/ch/aimservices/android/plugin" />
 		<source-file src="src/android/java/ch/aimservices/android/plugin/action/Action.java" target-dir="src/ch/aimservices/android/plugin/action" />
 		<source-file src="src/android/java/ch/aimservices/android/plugin/action/BaseAction.java" target-dir="src/ch/aimservices/android/plugin/action" />
 		<source-file src="src/android/java/ch/aimservices/android/plugin/action/ExitAppAction.java" target-dir="src/ch/aimservices/android/plugin/action" />
