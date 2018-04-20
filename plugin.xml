@@ -38,7 +38,7 @@
 
     		<provider
     			android:name="ch.aimservices.android.plugin.SenseUpdateFileProvider"
-    			android:authorities="${applicationId}.provider"
+    			android:authorities="${applicationId}.sense.provider"
     			android:exported="false"
     			android:grantUriPermissions="true" >
     				<meta-data
