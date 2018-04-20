@@ -136,7 +136,7 @@ public class UpdateAppAction extends BaseAction {
 					apkUri = Uri.fromFile(file);
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				} else {
-					apkUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".provider",
+					apkUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".sense.provider",
 							file);
 					intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 				}
