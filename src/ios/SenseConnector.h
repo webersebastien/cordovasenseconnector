@@ -30,4 +30,6 @@
 
 @property (nonatomic, strong) NSString* loginCommmandId;
 
++ (NSString *)errorStringForCode:(NSInteger)code;
+
 @end

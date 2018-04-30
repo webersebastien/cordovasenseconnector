@@ -7,11 +7,13 @@
 //
 
 #import "SenseConnector.h"
+#import <sense/SFKPCHImport.h>
 #import <sense/SFKInitializer.h>
 #import <sense/SFKSessionService.h>
 #import <sense/SFKNotificationName.h>
 #import <sense/SFKSecureStorage.h>
 #import <sense/SFKConfiguration.h>
+#import <sense/SFKErrorName.h>
 
 const int LOGIN_OK               = 0;
 const int LOGIN_PINCODE_REQUIRED = 1;
@@ -20,7 +22,6 @@ const int SESSION_EXPIRED        = 3;
 const int SESSION_LOCKED         = 4;
 const int BACKGROUND_DISABLE     = 5;
 const int OFFLINE_MODE_EXPIRED   = 6;
-
 
 typedef void (^LoginBlock)(NSError* error, SenseConnector* connector, CDVInvokedUrlCommand* command, NSString* updateUri);
 LoginBlock loginCallback = ^(NSError* error, SenseConnector* connector, CDVInvokedUrlCommand* command, NSString* updateUri) {
@@ -31,7 +32,7 @@ LoginBlock loginCallback = ^(NSError* error, SenseConnector* connector, CDVInvok
         NSString* message = [NSString stringWithFormat:@"Unable to login.\nError: %@", errorMsg];
         NSLog(@"\t%@", message);
 
-        NSDictionary* json = [connector createJSON:@"ERR_LOGIN_FAILED" withMessage:errorMsg];
+        NSDictionary* json = [connector createJSON:[SenseConnector errorStringForCode:error.code] withMessage:errorMsg];
         loginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:json];
     } else {
         NSString* message = @"Successfully logged-in, sending LOGIN_OK.";
@@ -50,6 +51,7 @@ LoginBlock loginCallback = ^(NSError* error, SenseConnector* connector, CDVInvok
     @property (nonatomic, assign) BOOL sessionReady;
     @property (nonatomic, strong) NSString* updateUri;
 
+    + (NSString *)errorStringForCode:(NSInteger)code;
     - (BOOL)isEnrolled:(NSString*)username;
     - (void)privacySettings;
     - (void)clearTraces;
@@ -58,6 +60,30 @@ LoginBlock loginCallback = ^(NSError* error, SenseConnector* connector, CDVInvok
 @end
 
 @implementation SenseConnector
+
++ (NSString *)errorStringForCode:(NSInteger)code {
+    NSString *errorString;
+    if (code == SFK_ERROR_CODE_AUTHENTICATION ||
+        code == SFK_ERROR_CODE_IDENTIFICATION) {
+        errorString = @"ERR_WRONG_CREDENTIALS";
+    } else if (code == SFK_ERROR_CODE_USER_DISENROLLED) {
+        errorString = @"ERR_USER_DISENROLLED";
+    } else if (code == SFK_ERROR_CODE_USER_ALREADY_ENROLLED) {
+        errorString = @"ERR_USER_ALREADY_ENROLLED";
+    } else if (code == SFK_ERROR_CODE_DEVICE_NOT_COMPLIANT) {
+        errorString = @"ERR_DEVICE_NOT_COMPLIANT";
+    } else if (code == SFK_ERROR_CODE_DEVICE_JAILBROKEN) {
+        errorString = @"ERR_DEVICE_JAILBROKEN";
+    } else if (code == SFK_ERROR_CODE_ACCESS_DENIED ||
+               code == SFK_ERROR_CODE_ACCOUNT_LOCKED) {
+        errorString = @"ERR_ACCESS_DENIED";
+    } else if (code == SFK_ERROR_CODE_PASSWORD_NOT_CHANGED) {
+        errorString = @"ERR_PASSWORD_NOT_CHANGED";
+    } else {
+        errorString = @"ERR_LOGIN_FAILED";
+    }
+    return errorString;
+}
 
 - (void)pluginInitialize {
     NSLog(@"SenseConnector plugin initializing");
