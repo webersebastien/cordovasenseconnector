@@ -1,5 +1,7 @@
 package ch.aimservices.android.plugin.action.session;
 
+import java.io.IOException;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.json.JSONArray;
@@ -10,6 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import android.util.Base64;
 import android.webkit.WebView;
+
+import ch.sysmosoft.sense.client.exception.UserDisenrolledException;
 
 import ch.aimservices.android.plugin.SenseServicesContext;
 
@@ -48,5 +52,14 @@ public class EnrollAction extends AbstractSessionAction {
             error(ERR_RETRIEVING_PARAMS);
         }
         return true;
+    }
+
+    @Override
+    public void onLoginFailed(final Throwable cause) {
+        if (cause instanceof UserDisenrolledException) {
+            logger.error("Enrollment not enabled or user is unknown");
+            super.onLoginFailed(new IOException(cause));
+        }
+        super.onLoginFailed(cause);
     }
 }

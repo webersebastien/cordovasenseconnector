@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin 
 	xmlns="http://apache.org/cordova/ns/plugins/1.0" 
-	xmlns:android="http://schemas.android.com/apk/res/android" id="ch.aimservices.cordova.plugins.sense" version="1.0.6">
+	xmlns:android="http://schemas.android.com/apk/res/android" id="ch.aimservices.cordova.plugins.sense" version="1.1.0">
 	<name>Sense-Connector</name>
 	<description>Connector between Cordova applications and Sysmosoft's Sense Framework</description>
 	<author>Pavel Blanco</author>
@@ -27,7 +27,7 @@
 			<!-- Services -->
 			<service android:name="ch.sysmosoft.sense.android.core.service.SenseSessionService" android:exported="false">
 				<!-- SDK version -->
-				<meta-data android:name="ch.sysmosoft.sense.android.sdk.version" android:value="3.17.0-SNAPSHOT" />
+				<meta-data android:name="ch.sysmosoft.sense.android.sdk.version" android:value="3.17.0" />
 			</service>
 			<activity android:name="ch.aimservices.android.plugin.SenseConnector" android:label="@string/app_name">
 				<intent-filter>
@@ -107,7 +107,7 @@
 		<!-- Plugin's libraries -->
 		<resource-file src="src/android/libs/commons-io-2.4.jar" target="libs/commons-io-2.4.jar" />
 		<!-- Sense SDK jars -->
-		<resource-file src="src/android/libs/sense-sdk-android-sdk-3.17.0-SNAPSHOT.jar" target="libs/sense-sdk-android-sdk-3.17.0-SNAPSHOT.jar" />
+		<resource-file src="src/android/libs/sense-sdk-android-sdk-3.17.0.jar" target="libs/sense-sdk-android-sdk-3.17.0.jar" />
 		<resource-file src="src/android/libs/android-database-sqlcipher-3.5.3.jar" target="libs/android-database-sqlcipher-3.5.3.jar" />
 		<resource-file src="src/android/libs/slf4j-api-1.7.25.jar" target="libs/slf4j-api-1.7.25.jar" />
 		<!-- Properties -->
