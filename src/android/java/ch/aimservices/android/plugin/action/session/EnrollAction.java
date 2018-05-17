@@ -56,10 +56,10 @@ public class EnrollAction extends AbstractSessionAction {
 
     @Override
     public void onLoginFailed(final Throwable cause) {
-    	if(cause instanceof UserDisenrolledException) {
-    		logger.error("Enrollment not enabled or user is unknown");
-    		super.onLoginFailed(new IOException(cause));
-		}
-		super.onLoginFailed(cause);
+        if (cause instanceof UserDisenrolledException) {
+            logger.error("Enrollment not enabled or user is unknown");
+            super.onLoginFailed(new IOException(cause));
+        }
+        super.onLoginFailed(cause);
     }
 }
