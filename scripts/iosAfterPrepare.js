@@ -41,11 +41,6 @@ if (rootdir) {
 		var projectPlistJson = plist.parse(fs.readFileSync(projectPlistPath, 'utf8'));
 		var bundleID = projectPlistJson.CFBundleIdentifier;
 
-		// test
-		var entitlementsPath = path.join(iosFolder, projName, 'Entitlements-Debug.plist');
-		var entitlementsJson = {"keychain-access-groups": ["Polo"]};
-		fs.writeFileSync(entitlementsPath, plist.build(entitlementsJson));
-
 		var entitlementsFiles = ['Entitlements-Debug.plist', 'Entitlements-Release.plist']
 		for (var x=0; x<entitlementsFiles.length; x++) {
 			var entitlementsPath = path.join(iosFolder, projName, entitlementsFiles[x]);
