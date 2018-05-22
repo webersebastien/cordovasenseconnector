@@ -51,16 +51,9 @@ To create a blank project that will serve as a base for html sources, the proced
 - **Register on the Sysmosoft web site** : https://files.sysmosoft.com/sdk/sense-sdk.html
 - cordova plugins add https://github.com/devmobileaim/cordovasenseconnector.git
 - **Complete the sense-config.properties files** Add the value for `sec-server-url` and `sense-license` in the `sense-config.properties` for Android and iOS
-- **Follow the steps for the iOS keychain support**
 - cordova build ios
 - cordova build android
 You have a project that you can edit or compile with XCode command line.
-
-## iOS - Keychain support
-To save the important data in the keychain, you need to enable the `Keychaing Sharing` capability.
-
-* In Xcode, open the `Capabilities` of your application project and search for `Keychain Sharing`
-* Turn on the `Keychain Sharing` capability
 
 ## iOS - Use the debugger
 With the default SENSE SDK, the debugger is not usable. To enable the debug mode, you need to install the debug version of the SENSE SDK.
