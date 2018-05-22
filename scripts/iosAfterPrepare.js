@@ -8,11 +8,10 @@ var fs = require('fs'),
 var rootdir = process.argv[2];
 
 if (rootdir) {
-	console.log("Running hook to add iOS Keychain Sharing entitlements");
+	console.log("SENSE - Running hook to add iOS keychain access group entitlements");
 
 	var iosPlatform = path.join('platforms', 'ios');
 	var iosFolder = fs.existsSync(iosPlatform) ? iosPlatform : context.opts.projectRoot;
-	console.log("iosFolder: " + iosFolder);
 
 	fs.readdir(iosFolder, function (err, data) {
 		if (err) {
