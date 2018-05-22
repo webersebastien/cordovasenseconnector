@@ -37,16 +37,13 @@ if (rootdir) {
 		}
 
 		var projectPlistPath = path.join(iosFolder, projName, util.format('%s-Info.plist', projName));
-		console.log("Plist path: "+ JSON.stringify(projectPlistPath));
 		var projectPlistJson = plist.parse(fs.readFileSync(projectPlistPath, 'utf8'));
 		var bundleID = projectPlistJson.CFBundleIdentifier;
 
 		var entitlementsFiles = ['Entitlements-Debug.plist', 'Entitlements-Release.plist']
 		for (var x=0; x<entitlementsFiles.length; x++) {
 			var entitlementsPath = path.join(iosFolder, projName, entitlementsFiles[x]);
-			console.log("Entitlements path: "+ JSON.stringify(entitlementsPath));
 			var entitlementsJson = plist.parse(fs.readFileSync(entitlementsPath, 'utf8'));
-			console.log("Entitlements: "+ JSON.stringify(entitlementsJson));
 
 			var accessGroup = "$(AppIdentifierPrefix)" + bundleID
 			var keychainAccessGroup = entitlementsJson["keychain-access-groups"];
