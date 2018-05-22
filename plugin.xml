@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin 
-	xmlns="http://apache.org/cordova/ns/plugins/1.0" 
+<plugin
+	xmlns="http://apache.org/cordova/ns/plugins/1.0"
 	xmlns:android="http://schemas.android.com/apk/res/android" id="ch.aimservices.cordova.plugins.sense" version="1.1.0">
 	<name>Sense-Connector</name>
 	<description>Connector between Cordova applications and Sysmosoft's Sense Framework</description>
@@ -20,7 +20,7 @@
 			<uses-permission android:name="android.permission.BLUETOOTH" />
 			<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-			<!-- Permission REQUEST_INSTALL_PACKAGES required for apps with targetSdk > 26 --> 
+			<!-- Permission REQUEST_INSTALL_PACKAGES required for apps with targetSdk > 26 -->
 			<!-- <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/> -->
 		</config-file>
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
@@ -46,7 +46,7 @@
     			        android:resource="@xml/sense_provider_paths"/>
     		</provider>
     	</config-file>
-    	
+
     	<config-file target="res/xml/config.xml" parent="/*">
     		<feature name="SenseConnector">
     			<param name="android-package" value="ch.aimservices.android.plugin.SenseConnector" />
@@ -57,15 +57,15 @@
     			<param name="onload" value="true" />
     		</feature>
     	</config-file>
-    	
+
     	<js-module src="www/console-via-logger.js" name="console">
 	    	<clobbers target="console" />
 	    </js-module>
-	    
+
 	    <js-module src="www/logger.js" name="logger">
 	    	<clobbers target="cordova.logger" />
 	    </js-module>
-	    
+
 		<!-- Java sources -->
 		<source-file src="src/android/java/ch/aimservices/android/plugin/SenseConnector.java" target-dir="src/ch/aimservices/android/plugin" />
 		<source-file src="src/android/java/ch/aimservices/android/plugin/Console.java" target-dir="src/ch/aimservices/android/plugin/" />
@@ -148,5 +148,6 @@
 		<resource-file src="src/ios/sense-config.properties" />
 		<header-file src="src/ios/SCDLogger.h" />
 		<source-file src="src/ios/SCDLogger.m" />
+		<hook type="after_prepare" src="scripts/iosAfterPrepare.js" />
 	</platform>
 </plugin>
