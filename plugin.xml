@@ -20,8 +20,7 @@
 			<uses-permission android:name="android.permission.BLUETOOTH" />
 			<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-			<!-- Permission REQUEST_INSTALL_PACKAGES required for apps with targetSdk > 26 -->
-			<!-- <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/> -->
+			<uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 		</config-file>
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
 			<!-- Services -->
